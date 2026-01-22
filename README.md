@@ -91,7 +91,7 @@ This script generates bootstrap samples from a set of msmc input sites. Type `--
 This python script (python2.7) contains some plotting functions you can use. Have a look at the doc-strings in each function. Import this module to your python plotting script, or import them into some other script that outputs plotting data for another tool. Most plotting functions in this script return a pair of (x, y), where x and y are list of coordinates to plot in your favorite plotting tool.
 
 ### makeMappabilityMask.py
-This is a little script that converts a fasta file with a mappability mask (see Heng Li's [SNPable](http://lh3lh3.users.sourceforge.net/snpable.shtml)) to a bed file. Have a look at the script, you should change the path to the fasta file.
+This is a little script that converts a fasta file with a mappability mask (see Heng Li's [SNPable](http://lh3lh3.users.sourceforge.net/snpable.shtml)) to a bed file. Usage: `./makeMappabilityMask.py <input_file> <output_prefix>`, where `<input_file>` is the path to the input fasta file and `<output_prefix>` is the prefix of the output bed files.
 
 ### ms2multihetsep.py
 This is a program that converts [ms](http://home.uchicago.edu/rhudson1/source/mksamples.html) output to MSMC input files. This will also work for the [SCRM simulator](http://scrm.github.io), which runs much faster than ms and is recommended! The script needs some variables to be set:
@@ -116,3 +116,5 @@ This script was kindly contributed by Daniel Weissman and converts msmc output (
 ### vcfAllSiteParser.py
 This is a script that reads a VCF file from stdin and outputs a mask file and a VCF file. The input should be a VCF file for a single sample, that contains all sites that the individual has data for, including homozygous reference alleles. The output mask will be a bed file that gives the regions in which the individual was called, and the VCF file contains only the non-reference segregating sites.
 
+### vcfAllSiteParser_AllowMultiallelic.py
+This is a modified version of the `vcfAllSiteParser.py` script that takes into account multiallelic sites. Usage and output are otherwise the same as for `vcfAllSiteParser.py`. See the header of the script for further details.

@@ -8,6 +8,9 @@
 # VCF file. Note that, since the script no longer applies any constraints to the ALT field of the
 # input VCF file, care should be taken to remove unwanted variants such as indels beforehand.
 
+# Please address questions and comments about the vcfAllSiteParser_AllowMultiallelic.py script to
+# @IrisLiesbethRuesinkBueno.
+
 import sys
 import gzip
 import re

@@ -23,11 +23,28 @@ class MaskGenerator:
       self.lastStartPos = pos
       self.lastCalledPos = pos
 
-with open("/lustre/scratch113/projects/msmc/ref/human_g1k_v37.mask_35_50.fa", "r") as f:
+  def close(self):
+      if self.lastCalledPos != -1:
+        self.file.write("{}\t{}\t{}\n".format(self.chr, self.lastStartPos - 1, self.lastCalledPos))
+      self.file.close()
+
+if len(sys.argv) < 3:
+    print("Error: missing required argument.")
+    print("Usage: makeMappabilityMask.py <input_file> <output_prefix>")
+    sys.exit(1)
+
+input_file = sys.argv[1]
+output_prefix = sys.argv[2]
+
+chromCounter = 0
+with open(input_file, "r") as f:
   for line in f:
     if line.startswith('>'):
+      chromCounter += 1
+      if chromCounter != 1:
+        mask.close()
       chr = line.split()[0][1:]
-      mask = MaskGenerator("/lustre/scratch113/projects/msmc/ref/masks/hs37d5_chr{}.mask.bed.gz".format(chr), chr)
+      mask = MaskGenerator("{0}.{1}.mask.bed.gz".format(output_prefix, chr), chr)
       pos = 0
       continue
     for c in line.strip():
@@ -36,4 +53,5 @@ with open("/lustre/scratch113/projects/msmc/ref/human_g1k_v37.mask_35_50.fa", "r
         sys.stderr.write("processing pos:{}\n".format(pos))
       if c == "3":
         mask.addCalledPosition(pos)
-      
+
+mask.close()

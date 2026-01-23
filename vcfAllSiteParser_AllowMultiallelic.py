@@ -1,5 +1,16 @@
 #!/usr/bin/env python
 
+# The vcfAllSiteParser.py script ignores multiallelic sites, which are therefore considered uncalled
+# irrespective of whether the genotype is missing or not. In contrast, the
+# vcfAllSiteParser_AllowMultiallelic.py script regards multiallelic sites with a non-missing
+# genotype as called. Such sites will be included in the output mask file. In addition, multiallelic
+# sites where the genotype contains at least one alternative allele will be printed to the output
+# VCF file. Note that, since the script no longer applies any constraints to the ALT field of the
+# input VCF file, care should be taken to remove unwanted variants such as indels beforehand.
+
+# Please address questions and comments about the vcfAllSiteParser_AllowMultiallelic.py script to
+# @IrisLiesbethRuesinkBueno.
+
 import sys
 import gzip
 import re
@@ -55,10 +66,10 @@ for line in sys.stdin:
   if line_cnt % 10000 == 0:
     sys.stderr.write("parsing position {}\n".format(pos))
   line_cnt += 1
-  if re.match("^[ACTGactg]$", refAllele) and re.match("^[ACTGactg\.]$", altAllele):
+  if re.match("^[ACTGactg]$", refAllele):
     if genotypes[0] != '.' and genotypes[2] != '.':
       mask.addCalledPosition(pos)
-      if genotypes[0] == '1' or genotypes[2] == '1':
+      if genotypes[0] != '0' or genotypes[2] != '0':
         print line,
   
 mask.close()
